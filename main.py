@@ -1,5 +1,11 @@
 import discord
 import config
+from discord.ext import commands
+
+intents = discord.Intents.default()
+intents.messages = True
+bot = commands.Bot(command_prefix='$', intents=intents)
+
 
 class MyClient(discord.Client):
     def __init__(self, intents=None, **options):
@@ -13,8 +19,12 @@ class MyClient(discord.Client):
             await message.channel.send('Hello!')
 
 
-intents = discord.Intents.default()
-intents.messages = True
+@bot.command()
+async def test(ctx, arg):
+    await ctx.send(arg)
+
+
 client = MyClient(intents=intents)
 
+# Замените 'your_bot_token_here' на фактический токен вашего бота
 client.run(config.TOKEN)
