@@ -1,20 +1,23 @@
 import discord
 
+
+class MyClient(discord.Client):
+    def __init__(self, intents=None, **options):
+        super().__init__(intents=intents, **options)
+
+    async def on_ready(self):
+        print(f"We have logged in as {self.user}")
+
+    async def on_message(self, message):
+        if message.auther == self.user:
+            return
+
+        if message.content.startswith('$hello'):
+            await message.channel.send('Hello!')
+
+
 intents = discord.Intents.default()
-intents.message_content = True
+intents.messages = True
+client = MyClient(intents=intents)
 
-client = discord.Client(instens=intents)
-
-@client.event
-async def on_ready():
-    print(f"We have logged in as {client.user}")
-
-@client.event
-async def on_message(message):
-    if message.auther == client.user:
-        return
-
-    if message.content.startswith('$hello'):
-        await message.channel.send('Hello!')
-
-client.run('your token here')
+client.run('MTIwODMyMjQwNDM4MDcwNDgyMA.GJUoYW.NVf8lDWK4Rd_XSRCU5FKpBIxUTI7MZXmDuxHMM')
